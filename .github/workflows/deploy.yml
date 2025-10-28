@@ -14,13 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node.js locally for any local build steps
+      # 2️⃣ Setup Node.js locally for any build/test
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # 3️⃣ Install dependencies locally (optional, for build/test)
+      # 3️⃣ Install dependencies locally (optional)
       - name: Install dependencies
         run: npm install
 
@@ -40,7 +40,7 @@ jobs:
       - name: Verify gcloud authentication
         run: gcloud auth list
 
-      # 7️⃣ Deploy to GCP VM via gcloud SSH
+      # 7️⃣ Deploy to GCP VM via gcloud SSH with nvm fix
       - name: Deploy to GCP VM via gcloud SSH
         run: |
           set -e
@@ -50,11 +50,10 @@ jobs:
               set -e
               APP_DIR=/home/${{ secrets.GCP_USER }}/ConvoBot
 
-              # 1️⃣ Install Node.js 20 if missing
-              if ! command -v node &> /dev/null; then
-                curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-                sudo apt-get install -y nodejs build-essential
-              fi
+              # 1️⃣ Source nvm to ensure npm/node are available
+              export NVM_DIR=\"\$HOME/.nvm\"
+              [ -s \"\$NVM_DIR/nvm.sh\" ] && \. \"\$NVM_DIR/nvm.sh\"
+              [ -s \"\$NVM_DIR/bash_completion\" ] && \. \"\$NVM_DIR/bash_completion\"
 
               # 2️⃣ Install PM2 globally if missing
               if ! command -v pm2 &> /dev/null; then
