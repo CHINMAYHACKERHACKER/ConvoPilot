@@ -1,4 +1,4 @@
-import { getUserPasswordByEmail, incrementLoginAttment } from '../Models/userModel.js';
+import { getUserPasswordByEmail } from '../Models/userModel.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -24,7 +24,7 @@ export const login = async (req, res) => {
                     "jwt-refresh-token-secret-key",
                     { expiresIn: '1h' }
                 );
-                await incrementLoginAttment(hashedPassword.id);
+                // await incrementLoginAttment(hashedPassword.id);
                 return res.send({ status: true, code: 200, message: "LoggedIn Sucessfully", accessToken: accessToken, refreshToken: refreshToken });
             } else {
                 return res.send({ status: false, code: 401, message: "Invalid login details. Please try again" });

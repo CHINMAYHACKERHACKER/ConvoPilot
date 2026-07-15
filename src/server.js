@@ -33,6 +33,7 @@ app.get('/health', (req, res) => {
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
         pid: process.pid,
+        Message: "Server Working Fine"
     });
 });
 
