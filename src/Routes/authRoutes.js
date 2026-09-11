@@ -9,6 +9,6 @@ import { signUpReqModel, loginReqModel, forgotPasswordReqModel } from '../reqMod
 
 router.post("/sign-up", validateBody(signUpReqModel), signup);
 router.post("/login", validateBody(loginReqModel), login);
-router.post("/forgot-passwordasasasasasasas", validateBody(forgotPasswordReqModel), userForgotPassword);
+router.post("/forgot-password", validateBody(forgotPasswordReqModel), userForgotPassword);
 
 export default router;
