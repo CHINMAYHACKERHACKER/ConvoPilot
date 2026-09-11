@@ -54,4 +54,7 @@ if (cluster.isPrimary) {
         console.log(`server started on port ${port}`);
     })
     console.log(`Worker ${process.pid} startedd`);
+    console.log(`Worker ${process.pid} startedd`);
+    console.log(`Worker ${process.pid} startedd`);
+
 }
