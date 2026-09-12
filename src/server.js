@@ -53,5 +53,5 @@ if (cluster.isPrimary) {
     app.listen(port, () => {
         console.log(`server started on port ${port}`);
     })
-    console.log(`Worker ${process.pid} startedd`);
+    console.log(`Worker ${process.pid} started`);
 }
