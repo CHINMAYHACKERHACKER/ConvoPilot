@@ -1,81 +1,16 @@
-name: Deploy Node.js App to GCP VM
+name:Node Deployment CI/CD
 
 on:
   push:
-    branches:
-      - main
+    branches:[ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    steps:
-      # 1️⃣ Checkout code
-      - name: Checkout code
-        uses: actions/checkout@v4
+steps:
+  - name: Install dependencies
+    run: npm install
 
-      # 2️⃣ Setup Node.js locally for any build/test
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      # 3️⃣ Install dependencies locally (optional)
-      - name: Install dependencies
-        run: npm install
-
-      # 4️⃣ Authenticate GitHub Actions runner with GCP
-      - name: Authenticate with Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-
-      # 5️⃣ Setup gcloud CLI
-      - name: Setup gcloud CLI
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-
-      # 6️⃣ Verify authentication (optional)
-      - name: Verify gcloud authentication
-        run: gcloud auth list
-
-      # 7️⃣ Deploy to GCP VM via gcloud SSH with nvm fix
-      - name: Deploy to GCP VM via gcloud SSH
-        run: |
-          set -e
-          gcloud compute ssh ${{ secrets.GCP_USER }}@${{ secrets.GCP_VM_NAME }} \
-            --zone=${{ secrets.GCP_ZONE }} \
-            --command="bash -l -c '
-              set -e
-              APP_DIR=/home/${{ secrets.GCP_USER }}/ConvoBot
-
-              # 1️⃣ Source nvm to ensure npm/node are available
-              export NVM_DIR=\"\$HOME/.nvm\"
-              [ -s \"\$NVM_DIR/nvm.sh\" ] && \. \"\$NVM_DIR/nvm.sh\"
-              [ -s \"\$NVM_DIR/bash_completion\" ] && \. \"\$NVM_DIR/bash_completion\"
-
-              # 2️⃣ Install PM2 globally if missing
-              if ! command -v pm2 &> /dev/null; then
-                npm install -g pm2
-              fi
-
-              # 3️⃣ Prepare app directory
-              mkdir -p \$APP_DIR
-
-              # 4️⃣ Clone repo if missing, otherwise pull latest
-              if [ -d \"\$APP_DIR/.git\" ]; then
-                cd \$APP_DIR
-                git pull origin main
-              else
-                git clone https://github.com/CHINMAYHACKERHACKER/ConvoPilot.git \$APP_DIR
-                cd \$APP_DIR
-              fi
-
-              # 5️⃣ Install dependencies on VM
-              npm install --production
-
-              # 6️⃣ Restart or start PM2 process
-              pm2 restart ConvoBot || pm2 start src/server.js --name ConvoBot
-              pm2 save
-            '"
+  - name: Run the app
+    run: npm run dev
