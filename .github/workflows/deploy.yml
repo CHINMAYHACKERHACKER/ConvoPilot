@@ -1,17 +1,18 @@
-name: Node Deployment CI/CD
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:[main]
 
-jobs:
+job:
   deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    runs-on:ubuntu-latest
+      step:
+        name:checkout
+        uses:actions/checkout@v4
 
-      - name: Install dependencies
-        run: npm install
+        name:package install
+        run:npm install
 
-      - name: Run the app
-        run: npm start
+        name:run server    
+        run:npm start
