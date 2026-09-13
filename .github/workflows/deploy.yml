@@ -2,17 +2,17 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:[main]
+    branches: [main]
 
-job:
+jobs:
   deploy:
-    runs-on:ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
-      name:checkout
-      run:actions/checkout@v4
+      - name: checkout
+        uses: actions/checkout@v4
 
-      name:package install
-      run:npm install
+      - name: package install
+        run: npm install
 
-      name:run server    
-      run:npm start
+      - name: run server
+        run: npm start
