@@ -7,12 +7,12 @@ on:
 job:
   deploy:
     runs-on:ubuntu-latest
-      step:
-        name:checkout
-        run:actions/checkout@v4
+    steps:
+      name:checkout
+      run:actions/checkout@v4
 
-        name:package install
-        run:npm install
+      name:package install
+      run:npm install
 
-        name:run server    
-        run:npm start
+      name:run server    
+      run:npm start
