@@ -55,5 +55,5 @@ if (cluster.isPrimary) {
     })
     console.log(`Worker ${process.pid} started`);
     console.log(`Worker ${process.pid} started`);
-
+    console.log(`Worker ${process.pid} started`);
 }
